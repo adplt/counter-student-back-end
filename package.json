@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "DEBUG=counter-student-back-end:* node ./bin/www --exec babel-node --presets es2015,stage-2",
+    "start": "DEBUG=counter-student-back-end:* nodemon ./bin/www --exec babel-node --presets es2015,stage-2",
     "lint": "echo 'Running lint...' && eslint app/",
     "lint:fix": "eslint app/ --fix"
   },
