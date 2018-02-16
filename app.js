@@ -4,17 +4,22 @@ import path from 'path';
 import logger from 'morgan';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
-import index from './routes/index';
-import users from './routes/users';
+import login from './routes/login';
 import mongoose from 'mongoose';
+import session from 'express-session';
+import passport from 'passport';
+import flash from 'connect-flash';
+import passportConfig from './config/passport.config';
 
 const app = express();
 
-mongoose.connect('mongodb://counterstudent-shard-00-00-xpfey.mongodb.net:27017,counterstudent-shard-00-01-xpfey.mongodb.net:27017,counterstudent-shard-00-02-xpfey.mongodb.net:27017/counter-student?ssl=true&replicaSet=CounterStudent-shard-0&authSource=admin');
+passportConfig(passport);
+
+mongoose.connect('mongodb://localhost:27017/test');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
+app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -24,8 +29,13 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/users', users);
+// required for passport
+app.use(session({secret: 'ilovescotchscotchyscotchscotch'})); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+app.use(flash()); // use connect-flash for flash messages stored in session
+
+app.use('/', login);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

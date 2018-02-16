@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-// import bcrypt from 'bcrypt-nodejs';
+import bcrypt from 'bcrypt-nodejs';
 
 const userSchema = mongoose.Schema({
   nim: {type: String, required: true},
@@ -14,11 +14,11 @@ const userSchema = mongoose.Schema({
   timestamps: true,
 });
 
-// userSchema.methods.generateHash = (password) => bcrypt.hashSync(password, bcrypt.genSaltSync(8));
-//
-// userSchema.methods.validPassword = (password, user) => {
-//   const passFromDb = this === undefined ? user.password : this.password;
-//   return bcrypt.compareSync(password, passFromDb);
-// };
+userSchema.methods.generateHash = (password) => bcrypt.hashSync(password, bcrypt.genSaltSync(8));
+
+userSchema.methods.validPassword = (password, user) => {
+  const passFromDb = this === undefined ? user.password : this.password;
+  return bcrypt.compareSync(password, passFromDb);
+};
 
 export default mongoose.model('User', userSchema);
