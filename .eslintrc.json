@@ -24,7 +24,8 @@
       "no-unused-vars": ["error"],
       "comma-spacing": ["error", {
         "before": false,
-        "after": true }],
+        "after": true
+      }],
       "no-undef": 2,
       "space-before-blocks": 2,
       "space-before-function-paren": 2,
